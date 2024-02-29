@@ -17,14 +17,7 @@ spec:
           image: adijaiswal/shopping-kart:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8070
-          resources:
-            requests:
-              memory: "1Gi" 
-              cpu: "1000m"      
-            limits:
-              memory: "1Gi" 
-              cpu: "1000m"      
+            - containerPort: 8070      
               
 ---
 
