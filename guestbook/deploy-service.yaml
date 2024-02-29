@@ -1,35 +1,41 @@
-apiVersion: apps/v1 
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-boot-k8s-deployment
+  labels:
+    app: solar-system
+  name: solar-system
 spec:
+  replicas: 3
   selector:
     matchLabels:
-      app: spring-boot-k8s
-  replicas: 2
+      app: solar-system
+  strategy: {}
   template:
     metadata:
       labels:
-        app: spring-boot-k8s
+        app: solar-system
     spec:
       containers:
-        - name: spring-boot-k8s
-          image: adijaiswal/shopping-kart:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8070      
-              
+      - image: siddharth67/solar-system:v9
+        name: solar-system
+        imagePullPolicy: Always
+        ports: 
+        - containerPort: 80
+
 ---
 
-apiVersion: v1 # Kubernetes API version
-kind: Service # Kubernetes resource kind we are creating
-metadata: # Metadata of the resource kind we are creating
-  name: springboot-k8ssvc
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: solar-system
+  name: solar-system-service
 spec:
-  selector:
-    app: spring-boot-k8s
   ports:
-    - protocol: "TCP"
-      port: 8070 # The port that the service is running on in the cluster
-      targetPort: 8070 # The port exposed by the service
-  type: NodePort # type of the service.
+  - port: 80 #change to 80
+    protocol: TCP
+    targetPort: 80 #change to 80
+    nodePort: 30333
+  selector:
+    app: solar-system
+  type: NodePort
